@@ -1,12 +1,21 @@
-<ion-list>
-  <ion-item-sliding *ngFor="let item of taskService.listas">
+<ion-list >
+  <ion-item-sliding *ngFor="let item of taskService.listas |filtroCompletado:terminada">
     <ion-item detail (click)="GoList(item)">
       <ion-label>{{item.titulo}}</ion-label>
       <ion-note slot="end">{{item.items.length}} items</ion-note>
     </ion-item>
  
+
+    <ion-item-options side="start">
+      <ion-item-option (click)="editTitle(item)"
+                        color="success"> <ion-icon slot="start" name="create"></ion-icon></ion-item-option>
+   
+    </ion-item-options>
+
     <ion-item-options side="end">
-      <ion-item-option (click)="deleteList(item)">delete</ion-item-option>
+      <ion-item-option (click)="deleteList(item)"
+                             color="danger"
+                              ><ion-icon slot="end" name="trash"></ion-icon></ion-item-option>
     </ion-item-options>
   </ion-item-sliding>
 </ion-list>

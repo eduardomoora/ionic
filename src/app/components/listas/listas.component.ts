@@ -1,7 +1,9 @@
-import { Component, OnInit,Input} from '@angular/core';
+import { Component, OnInit,Input, ViewChild} from '@angular/core';
 import { TasksService } from 'src/app/services/tasks.service';
 import { Router } from '@angular/router';
 import { Lista } from 'src/app/models/lista.model';
+import { AlertController, IonList } from '@ionic/angular';
+import { IonSlides } from '@ionic/angular';
 
 @Component({
   selector: 'app-listas',
@@ -9,8 +11,14 @@ import { Lista } from 'src/app/models/lista.model';
   styleUrls: ['./listas.component.scss'],
 })
 export class ListasComponent implements OnInit {
-@Input() terminada=false;
-  constructor(public  taskService:TasksService,private  router:Router) { }
+
+  @ViewChild(IonList, { static: true}) lista: IonList;
+  @Input() terminada=false;
+//this close all of elements into ion list
+
+
+
+  constructor(public  taskService:TasksService,private  router:Router,public alertController:AlertController) { }
 
   ngOnInit() {}
 
@@ -32,5 +40,43 @@ export class ListasComponent implements OnInit {
    this.taskService.deleteList(item);
    
 
+  }
+
+  async editTitle(list:Lista){
+ 
+    const alert = await this.alertController.create({
+      header: 'Edit ',
+      inputs:[{
+        name:'titulo',
+        type:'text',
+        value: list.titulo,
+       
+      }]
+      ,
+      buttons: [{
+        text:'Cancel',
+        role:'cancel',
+        handler:()=>{
+             console.log('cancelar');
+             this.lista.closeSlidingItems();
+        }},
+        {
+          text:'accept',
+          handler:(data)=>{
+           if (data.titulo.length===0) {
+             return;
+           } else {
+           list.titulo=data.titulo;
+           this.taskService.saveStorage();
+             this.lista.closeSlidingItems();
+           }
+          }
+        }
+         
+      ]
+    });
+  
+    await alert.present();
+  
   }
 }
