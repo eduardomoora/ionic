@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<h2 style="color: aliceblue; text-align: center;">{{lista.titulo}}</h2>
+<ion-content>
+  <ion-item>
+    <ion-label position="floating">new item</ion-label>
+    <ion-input type="text" [(ngModel)]="newItem" (keyup.enter)="addItemList(newItem)"></ion-input>
+  </ion-item>
+
+
+  <ion-list>
+    <ion-list-header>
+      <ion-label>List</ion-label>
+    </ion-list-header>
+
+
+
+<ion-list>
+  <ion-item-sliding  *ngFor="let item of lista.items; let i = index" class="animated  fadeInDown">
+    <ion-item>
+      <ion-checkbox slot="start" [(ngModel)]="item.completado" (ionChange)="cambioCheck(item)"></ion-checkbox>
+      <ion-label>{{item.desc}}</ion-label>
+    </ion-item>
+
+    <ion-item-options side="end">
+      <ion-item-option (click)="delete(i)" color="danger">
+         <ion-icon slot="icon-only" name="close"></ion-icon>
+        </ion-item-option>
+    </ion-item-options>
+  </ion-item-sliding>
+</ion-list>
+
+
+
+  </ion-list>
+</ion-content>
